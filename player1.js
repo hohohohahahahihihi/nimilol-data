@@ -2,12 +2,11 @@
   'use strict';
 
   // =========================================================================
-  // 🔧 1. 데이터 저장소 및 클라우드플레어 워커 설정 (적용 완료)
+  // 🔧 1. 데이터 저장소 및 클라우드플레어 워커 설정
   // =========================================================================
   var GITHUB_JSON_URL     = "https://cdn.jsdelivr.net/gh/hohohohahahahihihi/nimilol-data@main/videos.json";
   var WORKER_URL          = "https://nimiol-proxy.jangdaeil300.workers.dev";
   var DEFAULT_XBBG_DOMAIN = "https://39.xbbg.tv";
-  // =========================================================================
 
   var ICONS = {
     play: '<polygon points="5,3 19,12 5,21"/>',
@@ -77,7 +76,6 @@
   var isVolumeDragging   = false;
   var speedMenuOpen      = false;
   var centerAnimTimer    = null;
-  var clickTimer         = null;
 
   // =========================================================================
   // 🔧 2. 주소 복호화 및 썸네일 자동 복구 함수
@@ -316,10 +314,16 @@
     }
   }
 
+  // 🔥 [핵심 패치 1] 모바일 브라우저를 위해 비동기 통신을 배제한 완벽한 동기식 재생 명령
   function togglePlay() {
     if (video.paused) {
       hidePoster();
-      video.play().catch(function () {});
+      var playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function (error) {
+          console.warn("Autoplay blocked by mobile browser:", error);
+        });
+      }
     } else {
       video.pause();
     }
@@ -382,7 +386,7 @@
   }
 
   // =========================================================================
-  // 🔧 4. HLS 스트리밍 재생 엔진 (클라우드플레어 워커 완벽 연동)
+  // 🔧 4. HLS 스트리밍 재생 엔진 (클라우드플레어 워커 연동)
   // =========================================================================
   function startStreamPlayback(realUrl) {
     if (activeHls) {
@@ -394,7 +398,6 @@
     var isDirect = isM3u8 || /\.(mp4)(\?.*)?$/i.test(realUrl);
 
     if (!isDirect) {
-      // 외부 iframe 주소인 경우
       video.style.display = 'none';
       if (loader) loader.classList.remove('on');
       hidePoster();
@@ -407,6 +410,7 @@
       return;
     }
 
+    // 안드로이드 및 PC 환경
     if (isM3u8 && typeof Hls !== 'undefined' && Hls.isSupported()) {
       var baseDir = realUrl.substring(0, realUrl.lastIndexOf('/') + 1);
       var workerBase = WORKER_URL.replace(/\/$/, '');
@@ -479,8 +483,15 @@
           if (errorState) errorState.classList.add('visible');
         }
       });
-    } else {
+      
+    // 🔥 [핵심 패치 2] 아이폰(iOS Safari) 전용 네이티브 HLS 지원 코드 완벽 적용
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = isM3u8 ? (WORKER_URL.replace(/\/$/, '') + '/?url=' + encodeURIComponent(realUrl)) : realUrl;
+      video.load(); // 아이폰에서 스트리밍을 강제로 준비시킴
+      if (loader) loader.classList.remove('on');
+    } else {
+      video.src = realUrl;
+      video.load();
       if (loader) loader.classList.remove('on');
     }
   }
@@ -493,14 +504,12 @@
     var id = params.get('id');
     var directSrc = params.get('src');
 
-    // 직접 스트림 주소(?src=...)가 넘어온 경우
     if (directSrc) {
       if (loader) loader.classList.add('on');
       startStreamPlayback(directSrc);
       return;
     }
 
-    // ?id= 파라미터가 없으면 aeontv09 처럼 빈 대기 화면(0:00:00) 유지!
     if (!id) {
       if (loader) loader.classList.remove('on');
       return;
@@ -673,21 +682,25 @@
     }
   });
 
+  // 🔥 [핵심 패치 3] 화면 터치 시 '지연 재생(setTimeout)'을 완전히 제거하여 모바일 브라우저 재생 차단을 방지!
+  let lastTapTime = 0;
   playerContainer.addEventListener('click', function (e) {
-    if (e.target.closest('#controlsWrapper') || e.target.closest('#speedMenu')) return;
-    if (clickTimer) {
-      clearTimeout(clickTimer);
-      clickTimer = null;
+    if (e.target.closest('#controlsWrapper') || e.target.closest('#speedMenu') || e.target.closest('#topBar')) return;
+    
+    var currentTime = new Date().getTime();
+    var tapLength = currentTime - lastTapTime;
+    lastTapTime = currentTime;
+
+    if (tapLength > 0 && tapLength < 300) {
+      // 더블 클릭(터치) 시 10초 스킵
       var rect = playerContainer.getBoundingClientRect();
       var x = e.clientX - rect.left;
       if (x < rect.width / 2) skip(-10);
       else skip(10);
     } else {
-      clickTimer = setTimeout(function () {
-        clickTimer = null;
-        togglePlay();
-        showCenterIcon(isPlaying ? 'play' : 'pause');
-      }, 220);
+      // 한 번 클릭(터치) 시 즉각 재생/정지
+      togglePlay();
+      showCenterIcon(isPlaying ? 'play' : 'pause');
     }
   });
 
