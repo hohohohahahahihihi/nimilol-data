@@ -4,7 +4,7 @@
   // =========================================================================
   // 🔧 1. 데이터 저장소 및 클라우드플레어 워커 설정
   // =========================================================================
-  var GITHUB_JSON_URL     = "https://cdn.jsdelivr.net/gh/hohohohahahahihihi/nimilol-data@main/videos.json";
+  var GITHUB_JSON_URL = "https://raw.githubusercontent.com/hohohohahahahihihi/nimilol-data/main/videos.json";
   var WORKER_URL          = "https://nimiol-proxy.jangdaeil300.workers.dev";
   var DEFAULT_XBBG_DOMAIN = "https://39.xbbg.tv";
 
