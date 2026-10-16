@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="니미롤 — 무료 HD 스트리밍 비디오 포털"/>
+  <meta name="theme-color" content="#0f0f0f"/>
+  <title>니미롤 (Nimirol)</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    :root { --header-h: 56px; --sidebar-w: 240px; --sidebar-w-mini: 72px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto', 'Noto Sans KR', sans-serif; background: #0f0f0f; color: #f1f1f1; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+    /* HEADER */
+    .yt-header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); background: #0f0f0f; display: flex; align-items: center; padding: 0 16px; z-index: 100; gap: 16px; border-bottom: 1px solid #222; }
+    .yt-menu-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #f1f1f1; transition: background 0.15s; flex-shrink: 0; background: transparent; border: none; font-size: 18px; }
+    .yt-menu-btn:hover { background: #272727; }
+    .yt-logo { display: flex; align-items: center; gap: 6px; text-decoration: none; color: #f1f1f1; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; flex-shrink: 0; }
+    .yt-logo-icon { width: 30px; height: 21px; background: #ff0000; border-radius: 5px; position: relative; display: flex; align-items: center; justify-content: center; }
+    .yt-logo-icon::after { content: ''; width: 0; height: 0; border-left: 8px solid #fff; border-top: 5px solid transparent; border-bottom: 5px solid transparent; margin-left: 2px; }
+    .yt-logo-text { font-family: 'Noto Sans KR', sans-serif; font-weight: 900; letter-spacing: -0.5px; }
+    .yt-logo-text .accent { color: #ff0000; }
+    .yt-header-center { flex: 1; display: flex; justify-content: center; max-width: 720px; margin: 0 auto; }
+    .yt-search-form { display: flex; width: 100%; max-width: 640px; }
+    .yt-search-input { flex: 1; background: #121212; border: 1px solid #303030; border-radius: 20px 0 0 20px; padding: 8px 16px; color: #f1f1f1; font-size: 15px; outline: none; transition: border-color 0.15s; }
+    .yt-search-input:focus { border-color: #3ea6ff; }
+    .yt-search-btn { background: #222; border: 1px solid #303030; border-left: none; border-radius: 0 20px 20px 0; padding: 0 20px; color: #f1f1f1; cursor: pointer; transition: background 0.15s; font-size: 16px; }
+    .yt-search-btn:hover { background: #303030; }
+
+    /* SIDEBAR */
+    .yt-sidebar { position: fixed; top: var(--header-h); left: 0; bottom: 0; width: var(--sidebar-w); background: #0f0f0f; overflow-y: auto; overflow-x: hidden; padding: 12px 12px 0; z-index: 90; transition: transform 0.25s ease, width 0.25s ease; display: flex; flex-direction: column; }
+    .yt-sidebar.collapsed { width: var(--sidebar-w-mini); padding: 4px 4px 0; }
+    .yt-sidebar.collapsed .yt-sidebar-item { flex-direction: column; padding: 16px 0; gap: 6px; }
+    .yt-sidebar.collapsed .yt-sidebar-label { font-size: 10px; }
+    .yt-sidebar.collapsed .yt-sidebar-icon { margin: 0; font-size: 20px; }
+    .yt-sidebar.collapsed .yt-sidebar-header-text { display: none; }
+    .yt-sidebar.collapsed .yt-sidebar-divider { margin: 8px 0; }
+    .yt-sidebar-nav { flex: 1; min-height: 0; }
+    .yt-sidebar-item { display: flex; align-items: center; gap: 20px; padding: 10px 12px; border-radius: 10px; color: #f1f1f1; text-decoration: none; font-size: 14px; transition: background 0.15s; cursor: pointer; margin-bottom: 2px; }
+    .yt-sidebar-item:hover { background: #272727; }
+    .yt-sidebar-item.active { background: #272727; font-weight: 500; }
+    .yt-sidebar-icon { width: 24px; text-align: center; font-size: 18px; flex-shrink: 0; }
+    .yt-sidebar-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .yt-sidebar-divider { height: 1px; background: #272727; margin: 12px 0; }
+    .yt-sidebar-header-text { font-size: 14px; font-weight: 500; padding: 8px 12px; color: #aaa; }
+
+    /* MAIN */
+    .yt-main { margin-top: var(--header-h); margin-left: var(--sidebar-w); min-height: calc(100vh - var(--header-h)); transition: margin-left 0.25s ease; padding: 24px 24px 60px; }
+    .yt-main.sidebar-collapsed { margin-left: var(--sidebar-w-mini); }
+
+    /* CHIPS */
+    .yt-chips { display: flex; gap: 12px; overflow-x: auto; padding: 8px 0 20px 0; margin-bottom: 8px; scrollbar-width: none; position: sticky; top: var(--header-h); background: #0f0f0f; z-index: 50; }
+    .yt-chips::-webkit-scrollbar { display: none; }
+    .yt-chip { padding: 6px 14px; background: #272727; color: #f1f1f1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; border: none; flex-shrink: 0; text-decoration: none; }
+    .yt-chip:hover { background: #3a3a3a; }
+    .yt-chip.active { background: #f1f1f1; color: #0f0f0f; }
+
+    /* VIDEO GRID */
+    .yt-grid { display: grid; gap: 32px 16px; grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 1280px) { .yt-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) { .yt-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; } }
+
+    /* VIDEO CARD */
+    .yt-card { display: flex; flex-direction: column; cursor: pointer; text-decoration: none; color: inherit; }
+    .yt-card-thumb { position: relative; aspect-ratio: 16/9; background: #212121; border-radius: 12px; overflow: hidden; transition: border-radius 0.2s; }
+    .yt-card:hover .yt-card-thumb { border-radius: 0; }
+    .yt-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .yt-card:hover .yt-card-thumb img { transform: scale(1.05); }
+    .yt-card-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0, 0, 0, 0.8); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+    .yt-card-info { display: flex; gap: 12px; padding: 12px 4px 0; }
+    .yt-card-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; text-transform: uppercase; }
+    .yt-card-meta { flex: 1; min-width: 0; }
+    .yt-card-title { font-size: 15px; font-weight: 500; line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #f1f1f1; }
+    .yt-card-sub { font-size: 13px; color: #aaaaaa; }
+
+    /* WATCH PAGE */
+    .yt-watch-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; max-width: 1600px; margin: 0 auto; align-items: start; }
+    @media (max-width: 1100px) { .yt-watch-layout { grid-template-columns: 1fr; } }
+    .yt-player-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
+    .yt-player-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
+    .yt-watch-title { font-size: 20px; font-weight: 700; margin: 16px 0 12px; color: #f1f1f1; }
+    .yt-watch-desc { background: #272727; border-radius: 12px; padding: 16px; font-size: 14px; color: #f1f1f1; margin-top: 12px; }
+    .yt-watch-side { display: flex; flex-direction: column; gap: 10px; }
+    .yt-watch-side-item { display: flex; gap: 10px; cursor: pointer; text-decoration: none; color: inherit; padding: 4px; border-radius: 8px; }
+    .yt-watch-side-item:hover { background: #1f1f1f; }
+    .yt-watch-side-thumb { width: 160px; aspect-ratio: 16/9; background: #212121; border-radius: 8px; overflow: hidden; flex-shrink: 0; position: relative; }
+    .yt-watch-side-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .yt-watch-side-title { font-size: 14px; font-weight: 500; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* OVERLAY & MOBILE */
+    .yt-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 80; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .yt-overlay.open { opacity: 1; pointer-events: auto; }
+    @media (max-width: 900px) {
+      .yt-sidebar { transform: translateX(-100%); width: var(--sidebar-w); }
+      .yt-sidebar.mobile-open { transform: translateX(0); }
+      .yt-main { margin-left: 0; padding: 16px 12px 60px; }
+      .yt-main.sidebar-collapsed { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ 상단 헤더 ============ -->
+  <header class="yt-header" id="yt-header">
+    <button aria-label="Toggle menu" class="yt-menu-btn" id="menu-btn">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a aria-label="니미롤 홈" class="yt-logo" href="#/">
+      <span class="yt-logo-icon"></span>
+      <span class="yt-logo-text">니미<span class="accent">롤</span></span>
+    </a>
+    <div class="yt-header-center">
+      <form class="yt-search-form" id="search-form">
+        <input aria-label="Search" class="yt-search-input" id="search-input" placeholder="영상 검색..." type="text"/>
+        <button aria-label="Search" class="yt-search-btn" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+  </header>
+
+  <div class="yt-overlay" id="sidebar-overlay"></div>
+
+  <!-- ============ 좌측 사이드바 ============ -->
+  <aside class="yt-sidebar" id="yt-sidebar">
+    <div class="yt-sidebar-nav">
+      <!-- 메뉴 자동 생성 -->
+    </div>
+    <div class="yt-sidebar-footer">
+      <div style="font-size: 12px; color: #888; line-height: 1.4;">&copy; 2026 <strong>니미롤 (Nimirol)</strong></div>
+      <div style="font-size: 11px; color: #555; margin-top: 4px;">Free HD Streaming Portal. Updated daily.</div>
+    </div>
+  </aside>
+
+  <!-- ============ 메인 콘텐츠 영역 ============ -->
+  <main class="yt-main" id="main-content">
+    <div id="content">
+      <div style="text-align:center; padding: 100px; color: #888;">
+        <i class="fas fa-spinner fa-spin fa-3x mb-4"></i>
+        <p>영상을 불러오는 중입니다...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ 핵심 동작 스크립트 ============ -->
+  <script>
+    // =========================================================================
+    // 🔧 [필수 설정] 데이터 저장소 및 블로거 플레이어 주소
+    // =========================================================================
+    const GITHUB_JSON_URL = "https://cdn.jsdelivr.net/gh/hohohohahahahihihi/nimilol-data@main/videos.json";
+    
+    // 🔥 3단계에서 만든 '구글 블로거 플레이어 주소'를 입력합니다!
+    const PLAYER_URL      = "https://yakored.blogspot.com/";
+    // =========================================================================
+
+    const SITE_TEXT_FIRST = "니미";
+    const SITE_TEXT_LAST  = "롤";
+    const DEFAULT_XBBG_DOMAIN = "https://39.xbbg.tv";
+
+    let allVideos = [];
+    let allCategories = [];
+    let adHeaderHtml = "";
+    let adFooterHtml = "";
+
+    function extractCleanThumbUrl(rawThumb) {
+      if (!rawThumb) return "";
+      let u = String(rawThumb).trim();
+      try {
+        if (u.includes("code=")) {
+          const m = u.match(/[?&]code=([^&]+)/i);
+          if (m) {
+            const dec = decodeURIComponent(m[1]);
+            try {
+              const binStr = atob(dec);
+              const bytes = Uint8Array.from(binStr, c => c.codePointAt(0));
+              u = new TextDecoder().decode(bytes);
+            } catch (e) { u = atob(dec); }
+          }
+        } else if (u.includes("url=")) {
+          const m = u.match(/[?&]url=([^&]+)/i);
+          if (m) u = decodeURIComponent(m[1]);
+        }
+      } catch (e) {}
+
+      u = u.trim().replace(/\\\//g, "/");
+      const baseDom = DEFAULT_XBBG_DOMAIN.replace(/\/$/, "");
+
+      if (u.startsWith("/") && !u.startsWith("//")) {
+        u = baseDom + u;
+      } else if (!/^https?:\/\//i.test(u)) {
+        u = baseDom + "/" + u.replace(/^\.?\//, "");
+      }
+      if (u.includes("/data/file/") || u.includes("xbbg")) {
+        u = u.replace(/^https?:\/\/[^\/]+/i, baseDom);
+      }
+      try { u = decodeURIComponent(u); } catch (e) {}
+      return encodeURI(u).replace(/#/g, "%23");
+    }
+
+    // 썸네일 폴백 시스템
+    window.handleThumbError = function(imgEl) {
+      if (!imgEl) return;
+      const cleanUrl = imgEl.getAttribute("data-clean-src") || "";
+      const step = parseInt(imgEl.getAttribute("data-retry-step") || "0", 10);
+      if (cleanUrl && step === 0) {
+        imgEl.setAttribute("data-retry-step", "1");
+        imgEl.src = "https://wsrv.nl/?url=" + encodeURIComponent(cleanUrl);
+      } else if (cleanUrl && step === 1) {
+        imgEl.setAttribute("data-retry-step", "2");
+        imgEl.referrerPolicy = "no-referrer";
+        imgEl.src = cleanUrl;
+      } else {
+        imgEl.onerror = null;
+        imgEl.src = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="100%" height="100%" fill="#181818"/><text x="50%" y="50%" fill="#555555" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle" dy=".3em">NO THUMBNAIL</text></svg>');
+      }
+    };
+
+    function renderSidebarCategories() {
+      const nav = document.querySelector(".yt-sidebar-nav");
+      if (!nav) return;
+      let catLinks = "";
+      if (allCategories && allCategories.length > 0) {
+        catLinks = allCategories.map(c => `
+          <a class="yt-sidebar-item" data-nav="${c.name}" href="#/cat/${encodeURIComponent(c.name)}">
+            <span class="yt-sidebar-icon"><i class="fas fa-play-circle"></i></span>
+            <span class="yt-sidebar-label">${c.name}</span>
+          </a>
+        `).join("");
+      }
+      nav.innerHTML = `
+        <a class="yt-sidebar-item active" data-nav="all" href="#/">
+          <span class="yt-sidebar-icon"><i class="fas fa-home"></i></span>
+          <span class="yt-sidebar-label">홈 (전체보기)</span>
+        </a>
+        <div class="yt-sidebar-divider"></div>
+        <div class="yt-sidebar-header-text">카테고리</div>
+        ${catLinks}
+      `;
+    }
+
+    async function initApp() {
+      try {
+        const res = await fetch(GITHUB_JSON_URL + "?t=" + Math.floor(Date.now() / 10000));
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        allVideos = data.videos || [];
+        allCategories = data.categories || [];
+        adHeaderHtml = data.ad_header || "";
+        adFooterHtml = data.ad_footer || "";
+        if (allVideos.length === 0) throw new Error("영상이 0개입니다.");
+        renderSidebarCategories();
+      } catch (e) {
+        console.error("데이터 로드 실패:", e);
+        document.getElementById("content").innerHTML = `<div style="text-align:center;padding:80px;color:#ef4444;">데이터를 불러오지 못했습니다.<br>(${e.message})</div>`;
+        return;
+      }
+      handleRoute();
+    }
+
+    function renderGrid(videos, titleText) {
+      const content = document.getElementById("content");
+      const currentHash = decodeURIComponent(window.location.hash || "#/");
+      const catNames = ["all", ...(allCategories.map(c => c.name))];
+
+      const chipsHtml = `
+        <div class="yt-chips">
+          ${catNames.map(cat => {
+            const isActive = (cat === "all" && currentHash === "#/") || currentHash === `#/cat/${cat}`;
+            const label = cat === "all" ? "전체" : cat;
+            const href = cat === "all" ? "#/" : `#/cat/${encodeURIComponent(cat)}`;
+            return `<a href="${href}" class="yt-chip ${isActive ? 'active' : ''}">${label}</a>`;
+          }).join("")}
+        </div>
+      `;
+
+      if (videos.length === 0) {
+        content.innerHTML = chipsHtml + `<div style="text-align:center;padding:80px 20px;color:#888;">해당하는 영상이 없습니다.</div>`;
+        return;
+      }
+
+      const cardsHtml = videos.map((v, idx) => {
+        const vidId = v.id || idx;
+        const cleanThumb = extractCleanThumbUrl(v.thumb_url);
+        return `
+          <a href="#/watch/${vidId}" class="yt-card">
+            <div class="yt-card-thumb">
+              <img src="${cleanThumb}" data-clean-src="${cleanThumb}" data-retry-step="0" onerror="window.handleThumbError(this)" alt="" loading="lazy"/>
+              <span class="yt-card-badge">${v.duration || 'HD'}</span>
+            </div>
+            <div class="yt-card-info">
+              <div class="yt-card-avatar">${SITE_TEXT_FIRST.charAt(0)}</div>
+              <div class="yt-card-meta">
+                <div class="yt-card-title">${v.title}</div>
+                <div class="yt-card-sub">${v.category} · 조회수 ${(v.views || 0).toLocaleString()}회</div>
+              </div>
+            </div>
+          </a>
+        `;
+      }).join("");
+
+      content.innerHTML = `
+        ${adHeaderHtml ? `<div style="margin-bottom:20px;text-align:center;overflow:hidden;">${adHeaderHtml}</div>` : ''}
+        ${chipsHtml}
+        ${titleText ? `<h2 style="font-size:20px;font-weight:700;margin-bottom:20px;">${titleText}</h2>` : ''}
+        <div class="yt-grid">${cardsHtml}</div>
+      `;
+    }
+
+    function renderWatch(videoId) {
+      const content = document.getElementById("content");
+      const video = allVideos.find((v, idx) => String(v.id || idx) === String(videoId));
+
+      if (!video) {
+        content.innerHTML = `<div style="text-align:center;padding:80px;color:#888;">영상을 찾을 수 없습니다.</div>`;
+        return;
+      }
+
+      const related = allVideos.filter(v => v !== video).slice(0, 10);
+
+      // 🔥 핵심: 블로거 플레이어를 Iframe으로 소환!
+      const playerHtml = `<iframe src="${PLAYER_URL}?id=${video.id}" allowfullscreen="allowfullscreen" scrolling="no" style="position:absolute; width:100%; height:100%; border:none;"></iframe>`;
+
+      const relatedHtml = related.map((v, idx) => {
+        const vidId = v.id || idx;
+        const cleanThumb = extractCleanThumbUrl(v.thumb_url);
+        return `
+          <a href="#/watch/${vidId}" class="yt-watch-side-item">
+            <div class="yt-watch-side-thumb">
+              <img src="${cleanThumb}" data-clean-src="${cleanThumb}" data-retry-step="0" onerror="window.handleThumbError(this)" alt="" loading="lazy"/>
+              <span class="yt-card-badge" style="position:absolute;bottom:4px;right:4px;">${v.duration || 'HD'}</span>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div class="yt-watch-side-title">${v.title}</div>
+              <div style="font-size:12px;color:#aaa;margin-top:4px;">${v.category} · ${(v.views || 0).toLocaleString()}회</div>
+            </div>
+          </a>
+        `;
+      }).join("");
+
+      const tagsHtml = (video.tags || "").split(",").filter(t => t.trim() !== "").map(t => `<span style="color:#3ea6ff;margin-right:8px;font-size:13px;">#${t.trim()}</span>`).join("");
+
+      content.innerHTML = `
+        <div class="yt-watch-layout">
+          <div class="yt-watch-primary">
+            <div class="yt-player-wrap">${playerHtml}</div>
+            ${adFooterHtml ? `<div style="margin-top:16px;text-align:center;overflow:hidden;">${adFooterHtml}</div>` : ''}
+            <h1 class="yt-watch-title">${video.title}</h1>
+            <div class="yt-watch-desc">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #333; padding-bottom:12px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <div class="yt-card-avatar" style="width:40px;height:40px;font-size:16px;">${SITE_TEXT_FIRST.charAt(0)}</div>
+                  <div>
+                    <div style="font-weight:500;color:#fff;">${SITE_TEXT_FIRST}${SITE_TEXT_LAST}</div>
+                    <div style="font-size:12px;color:#aaa;">구독자 1.2만명</div>
+                  </div>
+                </div>
+                <div style="background:#f1f1f1;color:#0f0f0f;padding:8px 16px;border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;">구독</div>
+              </div>
+              <p><strong>조회수:</strong> ${(video.views || 0).toLocaleString()}회 · ${video.date || '최근 업로드'}</p>
+              <div style="margin-top:8px;">${tagsHtml}</div>
+              <p style="margin-top:12px;color:#ccc;white-space:pre-line;line-height:1.6;">${video.description || ''}</p>
+            </div>
+          </div>
+          <div class="yt-watch-side">
+            <h3 style="font-size:16px;font-weight:700;margin-bottom:8px;">다음 동영상</h3>
+            ${relatedHtml}
+          </div>
+        </div>
+      `;
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const hash = decodeURIComponent(window.location.hash || "#/");
+      document.querySelectorAll(".yt-sidebar-item").forEach(el => el.classList.remove("active"));
+
+      if (hash.startsWith("#/watch/")) {
+        renderWatch(hash.replace("#/watch/", ""));
+      } else if (hash.startsWith("#/cat/")) {
+        const cat = hash.replace("#/cat/", "");
+        const activeNav = document.querySelector(`.yt-sidebar-item[data-nav="${cat}"]`);
+        if (activeNav) activeNav.classList.add("active");
+        const filtered = allVideos.filter(v => (v.category || "").toLowerCase() === cat.toLowerCase());
+        renderGrid(filtered, `${cat} 카테고리 영상`);
+      } else if (hash.startsWith("#/search/")) {
+        const query = hash.replace("#/search/", "").toLowerCase();
+        const filtered = allVideos.filter(v => (v.title || "").toLowerCase().includes(query) || (v.tags || "").toLowerCase().includes(query));
+        renderGrid(filtered, `'${query}' 검색 결과 (${filtered.length}건)`);
+      } else {
+        const homeNav = document.querySelector('.yt-sidebar-item[data-nav="all"]');
+        if (homeNav) homeNav.classList.add("active");
+        renderGrid(allVideos, "");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuBtn = document.getElementById("menu-btn");
+      const sidebar = document.getElementById("yt-sidebar");
+      const mainContent = document.getElementById("main-content");
+      const overlay = document.getElementById("sidebar-overlay");
+
+      menuBtn.addEventListener("click", () => {
+        if (window.innerWidth <= 900) {
+          sidebar.classList.toggle("mobile-open");
+          overlay.classList.toggle("open");
+        } else {
+          sidebar.classList.toggle("collapsed");
+          mainContent.classList.toggle("sidebar-collapsed");
+        }
+      });
+
+      overlay.addEventListener("click", () => {
+        sidebar.classList.remove("mobile-open");
+        overlay.classList.remove("open");
+      });
+
+      document.getElementById("search-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const q = document.getElementById("search-input").value.trim();
+        if (q) window.location.hash = `#/search/${encodeURIComponent(q)}`;
+      });
+
+      window.addEventListener("hashchange", handleRoute);
+      initApp();
+    });
+  </script>
+</body>
+</html>
