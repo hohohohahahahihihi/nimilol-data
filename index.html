@@ -66,66 +66,25 @@
     .yt-chip:hover { background: #3a3a3a; }
     .yt-chip.active { background: #f1f1f1; color: #0f0f0f; }
 
-    /* 🔥 VIDEO GRID & CARD (모바일 트위터/BJ 썸네일 비율 붕괴 및 잘림 100% 방지) */
-    .yt-grid {
-      display: grid;
-      gap: 28px 16px;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      width: 100%;
-    }
+    /* VIDEO GRID & CARD */
+    .yt-grid { display: grid; gap: 28px 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
     @media (max-width: 1280px) { .yt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 900px) { .yt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; } }
 
-    .yt-card {
-      display: flex; flex-direction: column;
-      cursor: pointer; text-decoration: none; color: inherit;
-      min-width: 0; width: 100%; overflow: hidden;
-    }
-    .yt-card-thumb {
-      position: relative;
-      width: 100%;
-      padding-top: 56.25%; /* 16:9 절대 비율 고정 (세로 영상도 동일 크기로 표시) */
-      background: #1a1a1a;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .yt-card-thumb img {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center; display: block;
-    }
-    .yt-card-badge {
-      position: absolute; bottom: 6px; right: 6px;
-      background: rgba(0, 0, 0, 0.82); color: #fff;
-      padding: 2px 6px; border-radius: 4px; font-size: 11px; z-index: 2;
-    }
+    .yt-card { display: flex; flex-direction: column; cursor: pointer; text-decoration: none; color: inherit; min-width: 0; width: 100%; overflow: hidden; }
+    .yt-card-thumb { position: relative; width: 100%; padding-top: 56.25%; background: #1a1a1a; border-radius: 10px; overflow: hidden; }
+    .yt-card-thumb img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .yt-card-badge { position: absolute; bottom: 6px; right: 6px; background: rgba(0, 0, 0, 0.82); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; z-index: 2; }
     .yt-card-info { display: flex; gap: 10px; padding: 10px 2px 0; min-width: 0; width: 100%; }
     .yt-card-avatar { width: 32px; height: 32px; border-radius: 50%; background: #ff0000; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff; }
-    @media (max-width: 600px) { .yt-card-avatar { display: none; } } /* 모바일에서 제목 공간 확보 */
+    @media (max-width: 600px) { .yt-card-avatar { display: none; } }
     .yt-card-meta { flex: 1; min-width: 0; overflow: hidden; }
-    .yt-card-title {
-      font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 4px;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; text-overflow: ellipsis;
-      word-break: break-all; overflow-wrap: anywhere; color: #f1f1f1;
-    }
-    .yt-card-sub {
-      font-size: 12px; color: #aaaaaa;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    .yt-card-title { font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; word-break: break-all; overflow-wrap: anywhere; color: #f1f1f1; }
+    .yt-card-sub { font-size: 12px; color: #aaaaaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* 🔥 페이지네이션 (1, 2, 3, 4, 5 버튼) */
-    .yt-pagination {
-      display: flex; justify-content: center; align-items: center;
-      flex-wrap: wrap; gap: 6px; margin-top: 36px; padding-bottom: 20px;
-    }
-    .yt-page-btn {
-      min-width: 38px; height: 38px; padding: 0 12px;
-      border-radius: 8px; background: #222; color: #e5e5e5;
-      border: 1px solid #333; font-size: 14px; font-weight: 600;
-      display: inline-flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: 0.15s; user-select: none;
-    }
+    /* PAGINATION */
+    .yt-pagination { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 36px; padding-bottom: 20px; }
+    .yt-page-btn { min-width: 38px; height: 38px; padding: 0 12px; border-radius: 8px; background: #222; color: #e5e5e5; border: 1px solid #333; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.15s; user-select: none; }
     .yt-page-btn:hover:not(:disabled) { background: #333; border-color: #555; }
     .yt-page-btn.active { background: #ff0000; color: #fff; border-color: #ff0000; }
     .yt-page-btn:disabled { opacity: 0.35; cursor: default; }
@@ -191,14 +150,13 @@
   </main>
 
   <script>
-    // 🔥 캐시 지연 없이 즉시 반영되도록 raw.githubusercontent.com을 1순위로 호출
-    const RAW_JSON_URL = "https://raw.githubusercontent.com/hohohohahahahihihi/nimilol-data/main/videos.json";
-    const CDN_JSON_URL = "https://cdn.jsdelivr.net/gh/hohohohahahahihihi/nimilol-data@main/videos.json";
-    const PLAYER_URL   = "https://yakored.blogspot.com/";
-
+    const RAW_JSON_URL        = "https://raw.githubusercontent.com/hohohohahahahihihi/nimilol-data/main/videos.json";
+    const CDN_JSON_URL        = "https://cdn.jsdelivr.net/gh/hohohohahahahihihi/nimilol-data@main/videos.json";
+    const PLAYER_URL          = "https://yakored.blogspot.com/";
+    const WORKER_URL          = "https://nimiol-proxy.jangdaeil300.workers.dev";
     const SITE_TEXT_FIRST     = "니미";
     const DEFAULT_XBBG_DOMAIN = "https://39.xbbg.tv";
-    const ITEMS_PER_PAGE      = 20; // 🔥 1페이지당 20개 고정
+    const ITEMS_PER_PAGE      = 20;
 
     let allVideos = [];
     let allCategories = [];
@@ -238,6 +196,12 @@
       }
       try { u = decodeURIComponent(u); } catch (e) {}
       return encodeURI(u).replace(/#/g, "%23");
+    }
+
+    function buildPrimaryThumbSrc(rawThumb) {
+      const cleanUrl = extractCleanThumbUrl(rawThumb);
+      if (!cleanUrl) return "";
+      return `${WORKER_URL.replace(/\/$/, "")}/?url=${encodeURIComponent(cleanUrl)}`;
     }
 
     window.handleThumbError = function(imgEl) {
@@ -283,8 +247,8 @@
     async function fetchVideoData() {
       const ts = Date.now();
       const urls = [
-        `${RAW_JSON_URL}?t=${ts}`,
         `/videos.json?t=${ts}`,
+        `${RAW_JSON_URL}?t=${ts}`,
         `${CDN_JSON_URL}?t=${ts}`
       ];
       for (const u of urls) {
@@ -311,12 +275,10 @@
       handleRoute();
     }
 
-    // 페이지 이동 함수
     window.goToPage = function(baseHash, pageNum) {
       window.location.hash = `${baseHash}?page=${pageNum}`;
     };
 
-    // 1페이지당 20개씩 잘라서 렌더링
     function renderGrid(videos, titleText, baseHash, pageNum) {
       const content = document.getElementById("content");
       const catNames = ["all", ...(allCategories.map(c => c.name))];
@@ -345,10 +307,11 @@
       const cardsHtml = pagedVideos.map((v, idx) => {
         const vidId = v.id || (startIndex + idx);
         const cleanThumb = extractCleanThumbUrl(v.thumb_url);
+        const primaryThumb = buildPrimaryThumbSrc(v.thumb_url);
         return `
           <a href="#/watch/${vidId}" class="yt-card">
             <div class="yt-card-thumb">
-              <img src="${cleanThumb}" data-clean-src="${cleanThumb}" data-retry-step="0" onerror="window.handleThumbError(this)" alt="" loading="lazy"/>
+              <img src="${primaryThumb}" data-clean-src="${cleanThumb}" data-retry-step="0" onerror="window.handleThumbError(this)" alt="" loading="lazy"/>
               <span class="yt-card-badge">${v.duration || 'HD'}</span>
             </div>
             <div class="yt-card-info">
@@ -362,7 +325,6 @@
         `;
       }).join("");
 
-      // 페이지네이션 버튼 생성 (최대 5개 번호 블록씩 표시)
       let paginationHtml = "";
       if (totalPages > 1) {
         const blockSize = 5;
@@ -398,7 +360,6 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // 상세 재생 화면 (유튜브 구독자 및 구독 버튼 완전 제거)
     function renderWatch(videoId) {
       const content = document.getElementById("content");
       const video = allVideos.find((v, idx) => String(v.id || idx) === String(videoId));
@@ -409,15 +370,21 @@
       }
 
       const related = allVideos.filter(v => v !== video).slice(0, 12);
-      const playerHtml = `<iframe src="${PLAYER_URL}?id=${video.id}&m=0" allow="autoplay; fullscreen; encrypted-media" allowfullscreen="allowfullscreen" scrolling="no"></iframe>`;
+      const cleanThumb = extractCleanThumbUrl(video.thumb_url);
+      const vCode = video.video_code || (video.video_url ? btoa(unescape(encodeURIComponent(video.video_url))) : "");
+
+      // 🔥 핵심: 블로거가 videos.json 캐시 때문에 에러를 내지 않도록 영상 암호코드(code)와 썸네일을 직접 전달!
+      const playerIframeUrl = `${PLAYER_URL}?id=${encodeURIComponent(video.id || videoId)}&code=${encodeURIComponent(vCode)}&poster=${encodeURIComponent(cleanThumb)}&title=${encodeURIComponent(video.title || '')}&dur=${encodeURIComponent(video.duration || 'HD')}`;
+      const playerHtml = `<iframe src="${playerIframeUrl}" allow="autoplay; fullscreen; encrypted-media" allowfullscreen="allowfullscreen" scrolling="no"></iframe>`;
 
       const relatedHtml = related.map((v, idx) => {
         const vidId = v.id || idx;
-        const cleanThumb = extractCleanThumbUrl(v.thumb_url);
+        const rCleanThumb = extractCleanThumbUrl(v.thumb_url);
+        const rPrimaryThumb = buildPrimaryThumbSrc(v.thumb_url);
         return `
           <a href="#/watch/${vidId}" class="yt-watch-side-item">
             <div class="yt-watch-side-thumb">
-              <img src="${cleanThumb}" data-clean-src="${cleanThumb}" data-retry-step="0" onerror="window.handleThumbError(this)" alt="" loading="lazy"/>
+              <img src="${rPrimaryThumb}" data-clean-src="${rCleanThumb}" data-retry-step="0" onerror="window.handleThumbError(this)" alt="" loading="lazy"/>
               <span class="yt-card-badge" style="position:absolute;bottom:4px;right:4px;">${v.duration || 'HD'}</span>
             </div>
             <div style="flex:1;min-width:0;">
