@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="description" content="니미롤 — 무료 HD 스트리밍 비디오 포털"/>
   <meta name="theme-color" content="#0f0f0f"/>
   <title>니미롤 (Nimirol)</title>
@@ -18,34 +18,29 @@
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #555; }
 
     /* HEADER */
     .yt-header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); background: #0f0f0f; display: flex; align-items: center; padding: 0 16px; z-index: 100; gap: 16px; border-bottom: 1px solid #222; }
-    .yt-menu-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #f1f1f1; transition: background 0.15s; flex-shrink: 0; background: transparent; border: none; font-size: 18px; }
-    .yt-menu-btn:hover { background: #272727; }
-    .yt-logo { display: flex; align-items: center; gap: 6px; text-decoration: none; color: #f1f1f1; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; flex-shrink: 0; }
+    .yt-menu-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #f1f1f1; background: transparent; border: none; font-size: 18px; }
+    .yt-logo { display: flex; align-items: center; gap: 6px; text-decoration: none; color: #f1f1f1; font-size: 20px; font-weight: 700; }
     .yt-logo-icon { width: 30px; height: 21px; background: #ff0000; border-radius: 5px; position: relative; display: flex; align-items: center; justify-content: center; }
     .yt-logo-icon::after { content: ''; width: 0; height: 0; border-left: 8px solid #fff; border-top: 5px solid transparent; border-bottom: 5px solid transparent; margin-left: 2px; }
-    .yt-logo-text { font-family: 'Noto Sans KR', sans-serif; font-weight: 900; letter-spacing: -0.5px; }
+    .yt-logo-text { font-family: 'Noto Sans KR', sans-serif; font-weight: 900; }
     .yt-logo-text .accent { color: #ff0000; }
     .yt-header-center { flex: 1; display: flex; justify-content: center; max-width: 720px; margin: 0 auto; }
     .yt-search-form { display: flex; width: 100%; max-width: 640px; }
-    .yt-search-input { flex: 1; background: #121212; border: 1px solid #303030; border-radius: 20px 0 0 20px; padding: 8px 16px; color: #f1f1f1; font-size: 15px; outline: none; transition: border-color 0.15s; }
-    .yt-search-input:focus { border-color: #3ea6ff; }
-    .yt-search-btn { background: #222; border: 1px solid #303030; border-left: none; border-radius: 0 20px 20px 0; padding: 0 20px; color: #f1f1f1; cursor: pointer; transition: background 0.15s; font-size: 16px; }
-    .yt-search-btn:hover { background: #303030; }
+    .yt-search-input { flex: 1; background: #121212; border: 1px solid #303030; border-radius: 20px 0 0 20px; padding: 8px 16px; color: #f1f1f1; font-size: 15px; outline: none; }
+    .yt-search-btn { background: #222; border: 1px solid #303030; border-left: none; border-radius: 0 20px 20px 0; padding: 0 20px; color: #f1f1f1; cursor: pointer; font-size: 16px; }
 
     /* SIDEBAR */
-    .yt-sidebar { position: fixed; top: var(--header-h); left: 0; bottom: 0; width: var(--sidebar-w); background: #0f0f0f; overflow-y: auto; overflow-x: hidden; padding: 12px 12px 0; z-index: 90; transition: transform 0.25s ease, width 0.25s ease; display: flex; flex-direction: column; }
+    .yt-sidebar { position: fixed; top: var(--header-h); left: 0; bottom: 0; width: var(--sidebar-w); background: #0f0f0f; overflow-y: auto; padding: 12px 12px 0; z-index: 90; transition: transform 0.25s ease, width 0.25s ease; display: flex; flex-direction: column; }
     .yt-sidebar.collapsed { width: var(--sidebar-w-mini); padding: 4px 4px 0; }
     .yt-sidebar.collapsed .yt-sidebar-item { flex-direction: column; padding: 16px 0; gap: 6px; }
     .yt-sidebar.collapsed .yt-sidebar-label { font-size: 10px; }
     .yt-sidebar.collapsed .yt-sidebar-icon { margin: 0; font-size: 20px; }
     .yt-sidebar.collapsed .yt-sidebar-header-text { display: none; }
-    .yt-sidebar.collapsed .yt-sidebar-divider { margin: 8px 0; }
     .yt-sidebar-nav { flex: 1; min-height: 0; }
-    .yt-sidebar-item { display: flex; align-items: center; gap: 20px; padding: 10px 12px; border-radius: 10px; color: #f1f1f1; text-decoration: none; font-size: 14px; transition: background 0.15s; cursor: pointer; margin-bottom: 2px; }
+    .yt-sidebar-item { display: flex; align-items: center; gap: 20px; padding: 10px 12px; border-radius: 10px; color: #f1f1f1; text-decoration: none; font-size: 14px; cursor: pointer; margin-bottom: 2px; }
     .yt-sidebar-item:hover { background: #272727; }
     .yt-sidebar-item.active { background: #272727; font-weight: 500; }
     .yt-sidebar-icon { width: 24px; text-align: center; font-size: 18px; flex-shrink: 0; }
@@ -60,7 +55,7 @@
     /* CHIPS */
     .yt-chips { display: flex; gap: 12px; overflow-x: auto; padding: 8px 0 20px 0; margin-bottom: 8px; scrollbar-width: none; position: sticky; top: var(--header-h); background: #0f0f0f; z-index: 50; }
     .yt-chips::-webkit-scrollbar { display: none; }
-    .yt-chip { padding: 6px 14px; background: #272727; color: #f1f1f1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; border: none; flex-shrink: 0; text-decoration: none; }
+    .yt-chip { padding: 6px 14px; background: #272727; color: #f1f1f1; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; border: none; flex-shrink: 0; text-decoration: none; }
     .yt-chip:hover { background: #3a3a3a; }
     .yt-chip.active { background: #f1f1f1; color: #0f0f0f; }
 
@@ -71,22 +66,20 @@
 
     /* VIDEO CARD */
     .yt-card { display: flex; flex-direction: column; cursor: pointer; text-decoration: none; color: inherit; }
-    .yt-card-thumb { position: relative; aspect-ratio: 16/9; background: #212121; border-radius: 12px; overflow: hidden; transition: border-radius 0.2s; }
-    .yt-card:hover .yt-card-thumb { border-radius: 0; }
-    .yt-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
-    .yt-card:hover .yt-card-thumb img { transform: scale(1.05); }
-    .yt-card-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0, 0, 0, 0.8); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+    .yt-card-thumb { position: relative; aspect-ratio: 16/9; background: #212121; border-radius: 12px; overflow: hidden; }
+    .yt-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .yt-card-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0, 0, 0, 0.8); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
     .yt-card-info { display: flex; gap: 12px; padding: 12px 4px 0; }
-    .yt-card-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; text-transform: uppercase; }
+    .yt-card-avatar { width: 36px; height: 36px; border-radius: 50%; background: #ff0000; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; }
     .yt-card-meta { flex: 1; min-width: 0; }
     .yt-card-title { font-size: 15px; font-weight: 500; line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #f1f1f1; }
     .yt-card-sub { font-size: 13px; color: #aaaaaa; }
 
-    /* WATCH PAGE */
+    /* WATCH PAGE (모바일 반응형 완벽 대응) */
     .yt-watch-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; max-width: 1600px; margin: 0 auto; align-items: start; }
     @media (max-width: 1100px) { .yt-watch-layout { grid-template-columns: 1fr; } }
-    .yt-player-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
-    .yt-player-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
+    .yt-player-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    .yt-player-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; background: #000; }
     .yt-watch-title { font-size: 20px; font-weight: 700; margin: 16px 0 12px; color: #f1f1f1; }
     .yt-watch-desc { background: #272727; border-radius: 12px; padding: 16px; font-size: 14px; color: #f1f1f1; margin-top: 12px; }
     .yt-watch-side { display: flex; flex-direction: column; gap: 10px; }
@@ -109,11 +102,8 @@
 </head>
 <body>
 
-  <!-- ============ 상단 헤더 ============ -->
   <header class="yt-header" id="yt-header">
-    <button aria-label="Toggle menu" class="yt-menu-btn" id="menu-btn">
-      <i class="fas fa-bars"></i>
-    </button>
+    <button aria-label="Toggle menu" class="yt-menu-btn" id="menu-btn"><i class="fas fa-bars"></i></button>
     <a aria-label="니미롤 홈" class="yt-logo" href="#/">
       <span class="yt-logo-icon"></span>
       <span class="yt-logo-text">니미<span class="accent">롤</span></span>
@@ -128,18 +118,14 @@
 
   <div class="yt-overlay" id="sidebar-overlay"></div>
 
-  <!-- ============ 좌측 사이드바 ============ -->
   <aside class="yt-sidebar" id="yt-sidebar">
-    <div class="yt-sidebar-nav">
-      <!-- 메뉴 자동 생성 -->
-    </div>
+    <div class="yt-sidebar-nav"></div>
     <div class="yt-sidebar-footer">
       <div style="font-size: 12px; color: #888; line-height: 1.4;">&copy; 2026 <strong>니미롤 (Nimirol)</strong></div>
       <div style="font-size: 11px; color: #555; margin-top: 4px;">Free HD Streaming Portal. Updated daily.</div>
     </div>
   </aside>
 
-  <!-- ============ 메인 콘텐츠 영역 ============ -->
   <main class="yt-main" id="main-content">
     <div id="content">
       <div style="text-align:center; padding: 100px; color: #888;">
@@ -149,16 +135,9 @@
     </div>
   </main>
 
-  <!-- ============ 핵심 동작 스크립트 ============ -->
   <script>
-    // =========================================================================
-    // 🔧 [필수 설정] 데이터 저장소 및 블로거 플레이어 주소
-    // =========================================================================
     const GITHUB_JSON_URL = "https://cdn.jsdelivr.net/gh/hohohohahahahihihi/nimilol-data@main/videos.json";
-    
-    // 🔥 3단계에서 만든 '구글 블로거 플레이어 주소'를 입력합니다!
     const PLAYER_URL      = "https://yakored.blogspot.com/";
-    // =========================================================================
 
     const SITE_TEXT_FIRST = "니미";
     const SITE_TEXT_LAST  = "롤";
@@ -204,7 +183,6 @@
       return encodeURI(u).replace(/#/g, "%23");
     }
 
-    // 썸네일 폴백 시스템
     window.handleThumbError = function(imgEl) {
       if (!imgEl) return;
       const cleanUrl = imgEl.getAttribute("data-clean-src") || "";
@@ -323,9 +301,9 @@
       }
 
       const related = allVideos.filter(v => v !== video).slice(0, 10);
-
-      // 🔥 핵심: 블로거 플레이어를 Iframe으로 소환!
-      const playerHtml = `<iframe src="${PLAYER_URL}?id=${video.id}" allowfullscreen="allowfullscreen" scrolling="no" style="position:absolute; width:100%; height:100%; border:none;"></iframe>`;
+      
+      // 🔥 [핵심 수정] 모바일에서 블로거 전체 화면이 튀어나오지 않도록 sandbox 속성과 allow 속성을 완벽 장착한 Iframe 플레이어
+      const playerHtml = `<iframe src="${PLAYER_URL}?id=${video.id}" allow="autoplay; fullscreen; encrypted-media" allowfullscreen="allowfullscreen" scrolling="no" style="position:absolute; width:100%; height:100%; border:none;"></iframe>`;
 
       const relatedHtml = related.map((v, idx) => {
         const vidId = v.id || idx;
