@@ -1,14 +1,46 @@
 {
-    "updated_at": "2026-10-16 09:01:38",
-    "total_videos": 1796,
+    "updated_at": "2026-10-16 14:26:52",
+    "total_videos": 17162,
     "chunk_size": 2000,
     "daily_counts": {
-        "2026-10-16": 1796
+        "2026-10-16": 17162
     },
     "chunks": [
         {
             "file": "chunks\/videos_1.json",
-            "count": 1796
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_2.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_3.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_4.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_5.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_6.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_7.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_8.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_9.json",
+            "count": 1162
         }
     ],
     "categories": [
