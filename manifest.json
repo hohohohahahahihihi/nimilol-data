@@ -1,8 +1,9 @@
 {
-    "updated_at": "2026-10-16 14:26:52",
-    "total_videos": 17162,
+    "updated_at": "2026-11-17 16:53:37",
+    "total_videos": 24258,
     "chunk_size": 2000,
     "daily_counts": {
+        "2026-11-18": 7096,
         "2026-10-16": 17162
     },
     "chunks": [
@@ -40,7 +41,23 @@
         },
         {
             "file": "chunks\/videos_9.json",
-            "count": 1162
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_10.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_11.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_12.json",
+            "count": 2000
+        },
+        {
+            "file": "chunks\/videos_13.json",
+            "count": 258
         }
     ],
     "categories": [
@@ -50,8 +67,18 @@
             "sort_order": 1
         },
         {
+            "id": 13,
+            "name": "한국",
+            "sort_order": 1
+        },
+        {
             "id": 6,
             "name": "트위터야동",
+            "sort_order": 2
+        },
+        {
+            "id": 14,
+            "name": "BJ",
             "sort_order": 2
         },
         {
@@ -60,8 +87,18 @@
             "sort_order": 3
         },
         {
+            "id": 15,
+            "name": "일본",
+            "sort_order": 3
+        },
+        {
             "id": 8,
             "name": "온리팬스",
+            "sort_order": 4
+        },
+        {
+            "id": 16,
+            "name": "중국",
             "sort_order": 4
         },
         {
@@ -70,8 +107,18 @@
             "sort_order": 5
         },
         {
+            "id": 17,
+            "name": "동남아",
+            "sort_order": 5
+        },
+        {
             "id": 11,
             "name": "서양야동",
+            "sort_order": 6
+        },
+        {
+            "id": 18,
+            "name": "서양",
             "sort_order": 6
         },
         {
